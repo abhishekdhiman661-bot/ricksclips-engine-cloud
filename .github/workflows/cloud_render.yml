@@ -6,7 +6,7 @@ on:
       short_dir:
         description: 'Short directory path (e.g. shorts/short-1)'
         required: true
-        default: 'shorts/short-1'
+        default: 'shorts/short-3'
       quality:
         description: 'Video Quality (2k or 1080p)'
         required: false
@@ -51,15 +51,16 @@ jobs:
 
       - name: Copy Fonts to Project
         run: |
-          mkdir -p shorts/short-1/project/public/fonts shorts/short-2/project/public/fonts
+          mkdir -p shorts/short-1/project/public/fonts shorts/short-2/project/public/fonts shorts/short-3/project/public/fonts
           cp $HOME/RicksClips/.engine/fonts/* shorts/short-1/project/public/fonts/ || true
           cp $HOME/RicksClips/.engine/fonts/* shorts/short-2/project/public/fonts/ || true
+          cp $HOME/RicksClips/.engine/fonts/* shorts/short-3/project/public/fonts/ || true
 
       - name: Render Animated 3D Short
         env:
           RICKSCLIPS_BROWSER: /usr/bin/google-chrome
         run: |
-          TARGET_DIR="${{ github.event.inputs.short_dir || 'shorts/short-2' }}"
+          TARGET_DIR="${{ github.event.inputs.short_dir || 'shorts/short-3' }}"
           echo "Rendering $TARGET_DIR on cloud runner..."
           node scripts/render.mjs video "$TARGET_DIR" --work $HOME/RicksClips
 
@@ -68,6 +69,7 @@ jobs:
         with:
           name: short-final-video
           path: |
+            shorts/short-3/final.mp4
             shorts/short-2/final.mp4
             shorts/short-1/final.mp4
 
@@ -78,6 +80,7 @@ jobs:
           tag_name: render-${{ github.run_id }}
           name: "RicksClips Cloud Render #${{ github.run_id }}"
           files: |
+            shorts/short-3/final.mp4
             shorts/short-2/final.mp4
             shorts/short-1/final.mp4
         env:
