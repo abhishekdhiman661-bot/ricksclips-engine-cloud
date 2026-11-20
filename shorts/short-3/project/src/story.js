@@ -13,9 +13,6 @@ export default {
     const sunsetPal = makePalette(rand.fork(30), { family: "amber", accent: "red" });
 
     // --- Environment / Water & Harbor Pier ---
-    const waterMat = mat("plaster", { color: "#0284c7" });
-    const darkWaterMat = mat("plaster", { color: "#0f172a" });
-    const woodPierMat = mat("wood", { color: "#78350f" });
     const stoneDockMat = mat("stone", { color: "#334155" });
     const ironMat = mat("stone", { color: "#1e293b" });
     const goldMat = mat("wood", { color: "#eab308" });
@@ -46,7 +43,7 @@ export default {
     const engBow = kit.box(2.0, 2.0, 3.5, ironMat, { x: 0, y: 1.1, z: 5.5 });
     engineerShip.add(engBow);
     // Prominent 17-Foot Steel Bulbous Bow (The hero prop!)
-    const bulbMat = mat("stone", { color: "#ea580c" }); // Orange protective primer paint!
+    const bulbMat = mat("stone", { color: "#ea580c" }); // Orange protective primer paint
     const bulb = kit.cyl(1.1, 0.7, 3.2, bulbMat, { x: 0, y: 0.5, z: 7.2, rx: Math.PI / 2 });
     engineerShip.add(bulb);
     // Smokestacks / Funnels
@@ -95,12 +92,12 @@ export default {
       name: "engineer",
       look: makeLook(rand.fork(101), "adult", {
         fem: false,
-        skin: "#fed7aa",
-        hair: "#451a03",
+        skin: "#fffaf0",
+        hair: "#4b2f22",
         hairStyle: "short",
         outfit: "overalls",
-        top: "#0369a1",
-        shoes: "#1e293b",
+        top: "#2f3f7a",
+        shoes: "#16121a",
         build: 1.05
       }),
       pos: [-2.2, 3.5],
@@ -112,12 +109,12 @@ export default {
       name: "tycoon",
       look: makeLook(rand.fork(202), "adult", {
         fem: false,
-        skin: "#fde047",
-        hair: "#334155",
-        hairStyle: "parted",
+        skin: "#fffaf0",
+        hair: "#2b1d1a",
+        hairStyle: "short",
         outfit: "suit",
-        top: "#881337",
-        shoes: "#0f172a",
+        top: "#d9473a",
+        shoes: "#16121a",
         mustache: true,
         build: 1.18
       }),
@@ -126,69 +123,68 @@ export default {
     });
 
     // Initial Positions
-    engineer.face(0, "determined").arms(0, "hold");
+    engineer.face(0, "determined").arms(0, "reach");
     tycoon.hide(0);
 
     // --- Animation Timeline based on Narrator's Spoken Words ---
     // Shot 01 (0.0s - 5.8s): Engineer welds 17-foot steel bulb
-    const tWeld = at("welded", 1) || 1.2;
-    engineer.face(tWeld, "determined").arms(tWeld, "reach");
+    const tWeld = at("welded");
     fx.add("burst", tWeld, tWeld + 3.5, [-3.5, 1.2, 14.5], { size: 1.4, color: "#f97316" });
 
-    // Shot 02 (5.8s - 11.4s): Tycoon enters, competing for $1M naval trophy
-    const tTrophy = at("richest", 7) || 7.5;
-    tycoon.show(tTrophy - 0.5);
-    tycoon.face(tTrophy, "smug").arms(tTrophy, "point");
+    // Shot 02 (5.8s - 11.4s): Tycoon enters on cut at 5.8s, competing for $1M naval trophy
+    const tTrophy = at("richest");
+    tycoon.show(5.8);
+    tycoon.face(5.8, "smug").arms(5.8, "point");
     fx.add("stars", tTrophy, tTrophy + 2.0, [0, 2.6, 3.5], { size: 1.2, color: "#eab308" });
 
     // Shot 03 (11.4s - 16.8s): Tycoon taps the bulb and laughs (Joke 1)
-    const tMock = at("yells", 14) || 13.0;
-    tycoon.face(tMock, "laugh").arms(tMock, "armsUp");
-    engineer.face(tMock, "unimpressed").arms(tMock, "fold");
-    fx.add("exclaim", tMock + 1.0, tMock + 3.0, [2.2, 2.5, 3.5], { size: 0.9, color: "#ef4444" });
+    const tMock = at("yells");
+    tycoon.face(11.4, "laugh").arms(11.4, "armsUp");
+    engineer.face(11.4, "angry").arms(11.4, "cross");
+    fx.add("exclaim", tMock, tMock + 2.5, [2.2, 2.5, 3.5], { size: 0.9, color: "#ef4444" });
 
     // Shot 04 (16.8s - 23.0s): Engineer checks 43 brass steam gauges
-    const tGauges = at("gauges", 20) || 19.5;
-    tycoon.hide(tGauges);
-    engineer.face(tGauges, "focused").arms(tGauges, "work");
+    const tGauges = at("gauges");
+    tycoon.hide(16.8);
+    engineer.face(16.8, "thinking").arms(16.8, "reach");
     fx.add("burst", tGauges, tGauges + 2.5, [-2.2, 2.2, 3.5], { size: 0.8, color: "#38bdf8" });
 
     // Shot 05 (23.0s - 28.5s): Both giant battleships accelerate at 6 a.m.
-    const tFurnace = at("furnaces", 26) || 25.0;
+    const tFurnace = at("furnaces");
     fx.add("burst", tFurnace, tFurnace + 3.0, [-3.5, 4.5, 6.8], { size: 1.5, color: "#334155" });
     fx.add("burst", tFurnace + 0.2, tFurnace + 3.2, [3.5, 4.5, 6.8], { size: 1.5, color: "#334155" });
 
-    // Shot 06 (28.5s - 34.8s): Tycoon pulls ahead, shouting insult (Joke 2)
-    const tTaunt = at("shouting", 31) || 30.5;
-    tycoon.show(tTaunt - 0.5);
-    tycoon.face(tTaunt, "smug").arms(tTaunt, "wave");
-    engineer.face(tTaunt, "determined").arms(tTaunt, "steer");
+    // Shot 06 (28.5s - 34.8s): Tycoon pulls ahead on cut at 28.5s
+    const tTaunt = at("shouting");
+    tycoon.show(28.5);
+    tycoon.face(28.5, "smug").arms(28.5, "wave");
+    engineer.face(28.5, "determined").arms(28.5, "hold");
 
     // Shot 07 (34.8s - 40.4s): Bulb creates smooth secondary cancelling wave
-    const tSecondary = at("secondary", 37) || 37.0;
-    tycoon.hide(tSecondary);
+    const tSecondary = at("secondary");
+    tycoon.hide(34.8);
     fx.add("notes", tSecondary, tSecondary + 3.0, [-3.5, 0.5, 14.0], { size: 1.2, color: "#38bdf8" });
 
-    // Shot 08 (40.4s - 45.7s): Heavy storm swells slam both ships
-    const tStorm = at("swells", 42) || 42.0;
-    tycoon.show(tStorm - 0.5);
-    tycoon.face(tStorm, "shocked").arms(tStorm, "panic");
-    engineer.face(tStorm, "focused").arms(tStorm, "steer");
+    // Shot 08 (40.4s - 45.7s): Heavy storm swells slam both ships on cut at 40.4s
+    const tStorm = at("swells");
+    tycoon.show(40.4);
+    tycoon.face(40.4, "shocked").arms(40.4, "facepalm");
+    engineer.face(40.4, "determined").arms(40.4, "hold");
     fx.add("burst", tStorm, tStorm + 3.0, [0, 2.0, 10.0], { size: 2.2, color: "#e0f2fe" });
 
     // Shot 09 (45.7s - 47.8s): Sleek ship stalls!
-    const tStall = at("stalls", 46) || 46.5;
-    tycoon.face(tStall, "terrified").arms(tStall, "facepalm");
+    const tStall = at("stalls");
+    tycoon.face(45.7, "worried").arms(45.7, "armsUp");
     fx.add("burst", tStall, tStall + 2.0, [3.5, 3.5, 8.0], { size: 1.8, color: "#1e293b" });
 
     // Shot 10 (47.8s - 53.9s): Narrator scientific reveal - destructive interference
-    const tReveal = at("cancels", 50) || 50.0;
+    const tReveal = at("cancels");
     fx.add("stars", tReveal, tReveal + 3.5, [-3.5, 1.2, 14.5], { size: 1.5, color: "#22c55e" });
 
     // Shot 11 (53.9s - 59.6s): Engineer zooms past drenched tycoon, triumphant victory!
-    const tVictory = at("zooms", 55) || 55.5;
-    engineer.face(tVictory, "grin").arms(tVictory, "wave");
-    tycoon.face(tVictory, "defeated").arms(tVictory, "shiver");
+    const tVictory = at("zooms");
+    engineer.face(53.9, "grin").arms(53.9, "wave");
+    tycoon.face(53.9, "sad").arms(53.9, "shrug");
     fx.add("stars", tVictory, tVictory + 3.5, [-3.5, 3.2, 8.0], { size: 1.6, color: "#fbbf24" });
 
     // --- Dynamic 9:16 Camera Timeline ---
