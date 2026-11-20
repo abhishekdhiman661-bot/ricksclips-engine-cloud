@@ -20,11 +20,21 @@ export async function browserStatus(engineDir) {
   const override = browserOverride();
   if (override) return { ok: fs.existsSync(override), path: override, source: "RICKSCLIPS_BROWSER" };
   try {
-    const s = await R.ensureBrowser({ logLevel: "error", onBrowserDownload: () => { throw new Error("NEEDS_DOWNLOAD"); } });
-    return { ok: !!s.path, path: s.path || null, source: s.type };
+    const s = await R.ensureBrowser({ logLevel: "error", onBrowserDownload: () => {} });
+    if (s && s.path) return { ok: true, path: s.path, source: s.type };
   } catch (e) {
-    return { ok: false, why: String(e.message || e).includes("NEEDS_DOWNLOAD") ? "not downloaded yet" : String(e.message || e).slice(0, 200) };
+    // Check fallback chrome paths
+    const fallbacks = [
+      "/usr/bin/google-chrome",
+      "/usr/bin/chromium-browser",
+      "/usr/bin/chromium"
+    ];
+    for (const fb of fallbacks) {
+      if (fs.existsSync(fb)) return { ok: true, path: fb, source: "system-chrome" };
+    }
+    return { ok: false, why: String(e.message || e).slice(0, 200) };
   }
+  return { ok: false, why: "No browser found" };
 }
 
 export async function downloadBrowser(engineDir) {

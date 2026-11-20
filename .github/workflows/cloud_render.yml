@@ -55,6 +55,8 @@ jobs:
           cp $HOME/RicksClips/.engine/fonts/* shorts/short-1/project/public/fonts/ || true
 
       - name: Render Animated 3D Short
+        env:
+          RICKSCLIPS_BROWSER: /usr/bin/google-chrome
         run: |
           echo "Rendering short-1 on cloud runner..."
           node scripts/render.mjs video shorts/short-1 --work $HOME/RicksClips
