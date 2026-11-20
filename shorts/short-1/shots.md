@@ -1,0 +1,13 @@
+# Shot Plan: The Man Who Mailed Himself Out of Prison (short-1)
+Duration: 110.3s | Quality: 2K 1440x2560 30fps
+
+| Shot | Time (s) | Line / Words | Shot Size & Angle | Place / Set | Lighting | Characters & Action | Props / SFX |
+|---|---|---|---|---|---|---|---|
+| 01 | 0.0 - 5.2 | "In 2006, a man mails himself out of a federal prison..." | High Angle Wide | Federal Prison Yard & Loading Dock | Overcast Daylight | Giant shipping pallet with mailbags | Forklift, razor wire, crates |
+| 02 | 5.2 - 14.8 | "His name doesn't matter. What matters is this is his third escape..." | Medium Shot Push-in | Interrogation Room / Window | Harsh Cool Interior | McNair slips handcuffs with lip balm, jumps out window | Table, cuffs, tube of balm, shattered window |
+| 03 | 14.8 - 25.1 | "The second time, he crawls through a ventilation duct. Both times they catch him..." | Close-up Tracking | Dark Ventilation Duct & Cell Block | Cold Indigo / Rim Light | McNair crawling through duct, guards standing below | Air vent grille, flashlight beams |
+| 04 | 25.1 - 42.0 | "So now he's in a federal penitentiary in Louisiana... repairing torn mailbags..." | Medium Interior | Prison Textile Repair Workshop | Industrial Fluorescent | Inmates at sewing tables, McNair watching pallet shrink-wrapping | Heavy mail sacks, pallet stack, industrial shrink-wrap machine |
+| 05 | 42.0 - 62.5 | "You see, he doesn't dig a tunnel... He builds a hidden compartment... breathing tube..." | Cutaway X-Ray / Interior Macro | Inside the Pallet Crate | Dim Amber / Slit Light | McNair curled inside crate holding breathing tube; guards wrap pallet | Plastic shrink-wrap layers, rubber tube, forklift prongs |
+| 06 | 62.5 - 75.8 | "When the warehouse crew leaves for lunch, he cuts through the plastic..." | Low Angle Medium | Off-site Shipping Warehouse | Dusty Sunbeams | McNair slices plastic with box cutter, steps out in running shorts | Torn shrink wrap, empty warehouse floor, exit sign |
+| 07 | 75.8 - 98.4 | "Here's the part nobody believes. A cop spots him jogging along a railroad track... Name's Jimmy..." | Side Two-Shot Push | Railroad Track & Patrol Cruiser | Golden Hour Sunset | McNair jogging, police officer leans out window with clipboard | Police cruiser, dashcam lens, railway gravel, level crossing |
+| 08 | 98.4 - 110.3| "He stays free for over a year before the Mounties catch him in Canada. They don't let him fix mailbags anymore."| Wide Aerial Pull-out | Snowy Pine Woods & Supermax Cell | High Key White Snow to Supermax Dim | Mounties escort McNair; hard cut to supermax isolation | Mountie hats, handcuffs, heavy vault door, empty mail sack |

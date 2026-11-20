@@ -10,7 +10,9 @@ on:
       quality:
         description: 'Video Quality (2k or 1080p)'
         required: false
-        default: '2k'
+        default: '1080p'
+  push:
+    branches: [ main ]
 
 permissions:
   contents: write
@@ -26,15 +28,13 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: 'npm'
-          cache-dependency-path: 'package.json'
 
       - name: Setup Python 3.12
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
 
-      - name: Install System Dependencies (FFmpeg & Chrome)
+      - name: Install System FFmpeg
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y -qq ffmpeg
@@ -49,27 +49,28 @@ jobs:
           node scripts/init-workspace.mjs browser --work $HOME/RicksClips
           node scripts/init-workspace.mjs speech --work $HOME/RicksClips
 
-      - name: Verify Environment & Tools
+      - name: Copy Fonts to Project
         run: |
-          node scripts/check-tools.mjs --work $HOME/RicksClips
+          mkdir -p shorts/short-1/project/public/fonts
+          cp $HOME/RicksClips/.engine/fonts/* shorts/short-1/project/public/fonts/ || true
 
-      - name: Render Video
+      - name: Render Animated 3D Short
         run: |
-          mkdir -p ${{ github.event.inputs.short_dir }}
-          node scripts/render.mjs video ${{ github.event.inputs.short_dir }} --work $HOME/RicksClips
+          echo "Rendering short-1 on cloud runner..."
+          node scripts/render.mjs video shorts/short-1 --work $HOME/RicksClips
 
       - name: Upload Final Video Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ricksclips-render
-          path: ${{ github.event.inputs.short_dir }}/final.mp4
+          name: short-1-final-video
+          path: shorts/short-1/final.mp4
 
       - name: Publish GitHub Release
         if: success()
         uses: softprops/action-gh-release@v2
         with:
           tag_name: render-${{ github.run_id }}
-          name: "RicksClips Render #${{ github.run_id }}"
-          files: ${{ github.event.inputs.short_dir }}/final.mp4
+          name: "RicksClips Short #1: The Man Who Mailed Himself Out of Prison"
+          files: shorts/short-1/final.mp4
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
