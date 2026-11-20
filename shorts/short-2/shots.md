@@ -1,0 +1,13 @@
+# Shot Plan: The Student Who Demanded A $30M Fighter Jet From Pepsi (short-2)
+Duration: 112.5s | Quality: 2K 1440x2560 30fps
+
+| Shot | Time (s) | Line / Words | Shot Size & Angle | Place / Set | Lighting | Characters & Action | Props / SFX |
+|---|---|---|---|---|---|---|---|
+| 01 | 0.0 - 6.5 | "In 1996, a college student tries to buy a thirty-million-dollar military fighter jet..." | High Angle Wide | Military Airfield / School Lawn | Bright Clear Day | Giant Harrier Jump Jet landing vertically | Jet exhaust, landing gear, soda cans scattered |
+| 02 | 6.5 - 19.8 | "It starts with a national television commercial. Pepsi launches a rewards program..." | Medium Push-in | Living Room with Retro TV | Golden Evening | Teenager holding remote watching commercial | Tube television, glowing screen, soda six-pack |
+| 03 | 19.8 - 33.2 | "To drink seven million sodas, you would need to drink roughly 190 cans every single day..." | Low Angle Wide | Mountain of Soda Cans | Vibrant Daytime | Exhausted cartoon figure buried under soda mountain | Thousands of blue soda cans, calendar pages flying |
+| 04 | 33.2 - 52.0 | "You see, a 21-year-old business student named John flips to the back of the catalog... loophole..." | Desk Macro Close-up | College Dorm Study Room | Desk Lamp Interior | John with magnifying glass examining catalog fine print | Catalog booklet, pencil, calculator, checkbook |
+| 05 | 52.0 - 68.5 | "He does the math. Seven million points at ten cents each is seven hundred thousand dollars..." | High Angle Medium | Financial Boardroom | Polished Corporate | John presenting flipchart to five wealthy investors | Chalkboard math, stacks of cash, boardroom table |
+| 06 | 68.5 - 84.0 | "So he convinces five wealthy investors... certified check for $700,008... demands his fighter jet..." | Low Angle Tracking | Corporate Pepsi Headquarters Lobby | Sharp Cool Blue | John sliding massive certified check across front desk | Glass revolving door, receptionist desk, corporate logo |
+| 07 | 84.0 - 99.5 | "Pepsi freaks out. They reject his check... So John sues them in federal court..." | Medium Two-Shot | Federal Courtroom | Formal Mahogany & Brass | Judge in robes banging gavel, Pepsi lawyers in panic | Gavel, law books, witness stand, legal brief |
+| 08 | 99.5 - 112.5| "The judge eventually ruled... But just to be safe, Pepsi immediately updated the commercial to 700,000,000 points."| Wide Aerial Pull-out | TV Broadcast Studio & Billboard | High Key Studio Light | TV graphic glitching and changing '7,000,000' to '700,000,000' | Huge neon billboard, Harrier jet flying away into sunset |
