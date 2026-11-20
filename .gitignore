@@ -1,0 +1,7 @@
+node_modules
+.venv
+renders/
+*.part
+.DS_Store
+final.mp4
+render-profile.json

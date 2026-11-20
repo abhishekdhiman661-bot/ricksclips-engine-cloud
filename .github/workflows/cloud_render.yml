@@ -1,0 +1,75 @@
+name: Render RicksClips Short on Cloud
+
+on:
+  workflow_dispatch:
+    inputs:
+      short_dir:
+        description: 'Short directory path (e.g. shorts/short-1)'
+        required: true
+        default: 'shorts/short-1'
+      quality:
+        description: 'Video Quality (2k or 1080p)'
+        required: false
+        default: '2k'
+
+permissions:
+  contents: write
+
+jobs:
+  cloud_render:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+          cache-dependency-path: 'package.json'
+
+      - name: Setup Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install System Dependencies (FFmpeg & Chrome)
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg
+
+      - name: Initialize RicksClips Engine Workspace
+        run: |
+          mkdir -p $HOME/RicksClips
+          node scripts/init-workspace.mjs folders --work $HOME/RicksClips
+          node scripts/init-workspace.mjs npm --work $HOME/RicksClips
+          node scripts/init-workspace.mjs venv --work $HOME/RicksClips --python python3
+          node scripts/init-workspace.mjs fonts --work $HOME/RicksClips
+          node scripts/init-workspace.mjs browser --work $HOME/RicksClips
+          node scripts/init-workspace.mjs speech --work $HOME/RicksClips
+
+      - name: Verify Environment & Tools
+        run: |
+          node scripts/check-tools.mjs --work $HOME/RicksClips
+
+      - name: Render Video
+        run: |
+          mkdir -p ${{ github.event.inputs.short_dir }}
+          node scripts/render.mjs video ${{ github.event.inputs.short_dir }} --work $HOME/RicksClips
+
+      - name: Upload Final Video Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ricksclips-render
+          path: ${{ github.event.inputs.short_dir }}/final.mp4
+
+      - name: Publish GitHub Release
+        if: success()
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: render-${{ github.run_id }}
+          name: "RicksClips Render #${{ github.run_id }}"
+          files: ${{ github.event.inputs.short_dir }}/final.mp4
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
