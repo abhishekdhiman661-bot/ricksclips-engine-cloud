@@ -1,236 +1,212 @@
 import words from "./words.js";
 
 export default {
-  seed: 1910,
+  seed: 1925,
   words,
-  light: "day",
+  light: "golden",
   build({ W, kit, mat, glow, cast, fx, makeLook, rand, clock, aim, aerial, THREE, makePalette, tintLight, buildSet, prop, dress, lights, LIGHTS }) {
     const { at, end } = clock;
 
     // --- Palettes ---
-    const harborPal = makePalette(rand.fork(10), { family: "blue", accent: "orange" });
-    const stormPal = makePalette(rand.fork(20), { family: "indigo", accent: "teal" });
-    const sunsetPal = makePalette(rand.fork(30), { family: "amber", accent: "red" });
+    const vaultPal = makePalette(rand.fork(10), { family: "amber", accent: "orange" });
+    const prisonPal = makePalette(rand.fork(20), { family: "indigo", accent: "teal" });
+    const londonPal = makePalette(rand.fork(30), { family: "blue", accent: "amber" });
+    const palacePal = makePalette(rand.fork(40), { family: "olive", accent: "red" });
 
-    // --- Environment / Water & Harbor Pier ---
-    const stoneDockMat = mat("stone", { color: "#334155" });
-    const ironMat = mat("stone", { color: "#1e293b" });
-    const goldMat = mat("wood", { color: "#eab308" });
-    const rustSteelMat = mat("stone", { color: "#475569" });
+    // --- Environment / Ground ---
+    kit.ground(W, { kind: "slabs", color: vaultPal.floor });
+    kit.hills(W, { color: "#312e81", dist: 75 });
 
-    // Harbor water plane
-    kit.ground(W, { kind: "grass", color: harborPal.floor || "#0369a1" });
-    kit.hills(W, { color: "#0c4a6e", dist: 80 });
-
-    // Wooden Shipyard Dock / Pier
-    kit.path(W, [-15, 0], [15, 0], { width: 4.0, kind: "stone", color: "#1e293b" });
-
-    // Harbor Crane / Lighthouse in background
+    // Grand Bank Façade (Banco de Portugal / London Waterlow Office)
     kit.house(W, {
-      x: -12, z: -15, ry: 0, w: 6, d: 6, h: 18,
-      wall: "brick", wallColor: "#b91c1c",
-      roof: "flat", roofColor: "#0f172a",
-      trim: "#f8fafc",
-      sign: "DRYDOCK 17"
+      x: 0, z: -10, ry: 0, w: 26, d: 8, h: 8,
+      wall: "stone", wallColor: "#cbd5e1",
+      roof: "tiles", roofColor: "#0f172a",
+      trim: "#f59e0b",
+      sign: "BANCO DE PORTUGAL"
     });
 
-    // --- Model 1: Engineer's Battleship (With 17-Foot Bulbous Bow) ---
-    const engineerShip = new THREE.Group();
-    // Main Hull
-    const engHull = kit.box(2.6, 2.2, 9.0, ironMat, { x: 0, y: 1.1, z: 0 });
-    engineerShip.add(engHull);
-    // Pointed Bow
-    const engBow = kit.box(2.0, 2.0, 3.5, ironMat, { x: 0, y: 1.1, z: 5.5 });
-    engineerShip.add(engBow);
-    // Prominent 17-Foot Steel Bulbous Bow (The hero prop!)
-    const bulbMat = mat("stone", { color: "#ea580c" }); // Orange protective primer paint
-    const bulb = kit.cyl(1.1, 0.7, 3.2, bulbMat, { x: 0, y: 0.5, z: 7.2, rx: Math.PI / 2 });
-    engineerShip.add(bulb);
-    // Smokestacks / Funnels
-    const engFunnel1 = kit.cyl(0.45, 0.45, 2.4, rustSteelMat, { x: 0, y: 3.2, z: -1.2 });
-    const engFunnel2 = kit.cyl(0.45, 0.45, 2.4, rustSteelMat, { x: 0, y: 3.2, z: 1.2 });
-    engineerShip.add(engFunnel1);
-    engineerShip.add(engFunnel2);
-    // Bridge Tower
-    const engBridge = kit.box(1.8, 1.6, 2.2, ironMat, { x: 0, y: 2.8, z: 3.0 });
-    engineerShip.add(engBridge);
+    // Paved Street & Columns
+    kit.path(W, [-22, 5], [22, 5], { width: 3.2, kind: "stone", color: "#64748b" });
 
-    engineerShip.position.set(-3.5, 0, 8);
-    W.add(engineerShip, { name: "engineerShip" });
+    // Stacks of 100% Genuine Banknotes
+    const cashStackGroup = new THREE.Group();
+    const cashMat = mat("plaster", { color: "#86efac" });
+    const cashGoldMat = mat("wood", { color: "#eab308" });
 
-    // --- Model 2: Tycoon's Sleek Knife-Bow Warship ---
-    const tycoonShip = new THREE.Group();
-    // Ultra sharp sleek Hull
-    const tycHull = kit.box(2.2, 2.0, 9.5, ironMat, { x: 0, y: 1.0, z: 0 });
-    tycoonShip.add(tycHull);
-    // Needle-sharp Bow (No bulb!)
-    const tycBow = kit.box(1.2, 1.9, 4.0, ironMat, { x: 0, y: 1.0, z: 5.8 });
-    tycoonShip.add(tycBow);
-    // Gilded Funnels & Rails
-    const tycFunnel = kit.cyl(0.5, 0.5, 2.8, goldMat, { x: 0, y: 3.3, z: 0 });
-    tycoonShip.add(tycFunnel);
-    const tycBridge = kit.box(1.6, 1.8, 2.5, ironMat, { x: 0, y: 2.7, z: 2.8 });
-    tycoonShip.add(tycBridge);
+    for (let i = -1.2; i <= 1.2; i += 0.5) {
+      for (let j = -1.2; j <= 1.2; j += 0.5) {
+        const h = Math.max(0.3, 1.6 - Math.sqrt(i * i + j * j) * 0.7);
+        const stack = kit.box(0.42, h, 0.42, (i + j) % 2 === 0 ? cashMat : cashGoldMat, { x: i, y: h / 2, z: j });
+        cashStackGroup.add(stack);
+      }
+    }
+    cashStackGroup.position.set(3.5, 0, 1.5);
+    W.add(cashStackGroup, { name: "cashStacks" });
 
-    tycoonShip.position.set(3.5, 0, 8);
-    W.add(tycoonShip, { name: "tycoonShip" });
+    // Hero Prop: Industrial Banknote Printing Press with Rolling Cylinders
+    const pressGroup = new THREE.Group();
+    const castIronMat = mat("stone", { color: "#1e293b" });
+    const steelMat = mat("wood", { color: "#94a3b8" });
 
-    // --- Model 3: Golden Naval Speed Trophy ---
-    const trophyGroup = new THREE.Group();
-    const pedestal = kit.box(0.8, 1.2, 0.8, stoneDockMat, { x: 0, y: 0.6, z: 0 });
-    const cup = kit.cyl(0.4, 0.25, 0.9, goldMat, { x: 0, y: 1.6, z: 0 });
-    const handles = kit.box(1.1, 0.1, 0.3, goldMat, { x: 0, y: 1.8, z: 0 });
-    trophyGroup.add(pedestal);
-    trophyGroup.add(cup);
-    trophyGroup.add(handles);
-    trophyGroup.position.set(0, 0, 3.5);
-    W.add(trophyGroup, { name: "speedTrophy" });
+    // Frame
+    const base = kit.box(2.2, 0.4, 2.8, castIronMat, { x: 0, y: 0.2, z: 0 });
+    pressGroup.add(base);
+
+    // Rollers
+    const roller1 = kit.cyl(0.35, 0.35, 2.0, steelMat, { x: 0, y: 1.1, z: -0.5, ry: Math.PI / 2 });
+    const roller2 = kit.cyl(0.35, 0.35, 2.0, steelMat, { x: 0, y: 1.1, z: 0.5, ry: Math.PI / 2 });
+    pressGroup.add(roller1);
+    pressGroup.add(roller2);
+
+    // Paper feed sheet
+    const paperSheet = kit.box(1.8, 0.05, 2.2, cashMat, { x: 0, y: 1.15, z: 0 });
+    pressGroup.add(paperSheet);
+
+    pressGroup.position.set(-3.5, 0, 2);
+    W.add(pressGroup, { name: "printingPress" });
 
     // --- Cast ---
-    // The Naval Engineer (Hero)
-    const engineer = cast.add({
-      name: "engineer",
-      look: makeLook(rand.fork(101), "adult", {
+    // Artur Alves dos Reis (Charming 28-year-old gentleman swindler)
+    const artur = cast.add({
+      name: "artur",
+      look: makeLook(rand.fork(105), "adult", {
         fem: false,
-        skin: "#fffaf0",
-        hair: "#4b2f22",
+        skin: "#fcd34d",
+        hair: "#1c1917",
         hairStyle: "short",
-        outfit: "overalls",
-        top: "#2f3f7a",
-        shoes: "#16121a",
+        outfit: "suit",
+        top: "#0f172a",
+        hat: "bowler",
+        hatColor: "#020617",
+        shoes: "#18181b",
+        mustache: true,
         build: 1.05
       }),
-      pos: [-2.2, 3.5],
+      pos: [-0.8, 4.0],
       h: 1.78
     });
 
-    // The Shipyard Tycoon (Doubter / Rival)
-    const tycoon = cast.add({
-      name: "tycoon",
-      look: makeLook(rand.fork(202), "adult", {
+    // British Printing Executive (Waterlow & Sons Chairman)
+    const executive = cast.add({
+      name: "executive",
+      look: makeLook(rand.fork(210), "elder", {
         fem: false,
-        skin: "#fffaf0",
-        hair: "#2b1d1a",
-        hairStyle: "short",
-        outfit: "suit",
-        top: "#d9473a",
-        shoes: "#16121a",
-        mustache: true,
-        build: 1.18
+        skin: "#fed7aa",
+        hair: "#e2e8f0",
+        hat: "tophat",
+        hatColor: "#172554",
+        outfit: "coat",
+        top: "#1e3a8a",
+        shoes: "#020617",
+        glasses: true,
+        build: 1.1
       }),
-      pos: [2.2, 3.5],
-      h: 1.84
+      pos: [2.0, 4.0],
+      h: 1.82
     });
 
-    // Initial Positions
-    engineer.face(0, "determined").arms(0, "reach");
-    tycoon.hide(0);
+    // Bank Clerk / Investigator
+    const clerk = cast.add({
+      name: "clerk",
+      look: makeLook(rand.fork(315), "adult", {
+        fem: false,
+        skin: "#fde68a",
+        hair: "#78350f",
+        hairStyle: "short",
+        outfit: "vest",
+        top: "#475569",
+        shoes: "#334155",
+        glasses: true,
+        build: 0.95
+      }),
+      pos: [0, 9],
+      h: 1.72
+    });
 
-    // --- Animation Timeline based on Narrator's Spoken Words ---
-    // Shot 01 (0.0s - 5.8s): Engineer welds 17-foot steel bulb
-    const tWeld = at("welded");
-    fx.add("burst", tWeld, tWeld + 3.5, [-3.5, 1.2, 14.5], { size: 1.4, color: "#f97316" });
+    // Initial character visibility
+    executive.hide(0);
+    clerk.hide(0);
 
-    // Shot 02 (5.8s - 11.4s): Tycoon enters on cut at 5.8s, competing for $1M naval trophy
-    const tTrophy = at("richest");
-    tycoon.show(5.8);
-    tycoon.face(5.8, "smug").arms(5.8, "point");
-    fx.add("stars", tTrophy, tTrophy + 2.0, [0, 2.6, 3.5], { size: 1.2, color: "#eab308" });
+    // --- Acting Timeline ---
+    // Scene 1: Hook - Golden banknotes in vault
+    artur.face(0, "smug").arms(0, "hold");
+    fx.add("burst", 0.5, 2.5, [3.5, 1.8, 1.5], { size: 1.2, color: "#eab308" });
 
-    // Shot 03 (11.4s - 16.8s): Tycoon taps the bulb and laughs (Joke 1)
-    const tMock = at("yells");
-    tycoon.face(11.4, "laugh").arms(11.4, "armsUp");
-    engineer.face(11.4, "angry").arms(11.4, "cross");
-    fx.add("exclaim", tMock, tMock + 2.5, [2.2, 2.5, 3.5], { size: 0.9, color: "#ef4444" });
+    // Scene 2: Prison cell revelation
+    const tPrison = at("prison", 10) || 12.0;
+    artur.face(tPrison, "thinking").arms(tPrison, "think");
 
-    // Shot 04 (16.8s - 23.0s): Engineer checks 43 brass steam gauges
-    const tGauges = at("gauges");
-    tycoon.hide(16.8);
-    engineer.face(16.8, "thinking").arms(16.8, "reach");
-    fx.add("burst", tGauges, tGauges + 2.5, [-2.2, 2.2, 3.5], { size: 0.8, color: "#38bdf8" });
+    // Scene 3: Forging secret contract & gold seals
+    const tContract = at("contract", 22) || 24.0;
+    artur.face(tContract, "grin").arms(tContract, "reach");
+    fx.add("stars", tContract, tContract + 2.0, [-0.8, 2.4, 4.0], { size: 0.9, color: "#f59e0b" });
 
-    // Shot 05 (23.0s - 28.5s): Both giant battleships accelerate at 6 a.m.
-    const tFurnace = at("furnaces");
-    fx.add("burst", tFurnace, tFurnace + 3.0, [-3.5, 4.5, 6.8], { size: 1.5, color: "#334155" });
-    fx.add("burst", tFurnace + 0.2, tFurnace + 3.2, [3.5, 4.5, 6.8], { size: 1.5, color: "#334155" });
+    // Scene 4: Pitching to London Waterlow Chairman
+    const tLondon = at("London", 38) || 40.0;
+    executive.show(tLondon - 0.5);
+    executive.face(tLondon, "surprised").arms(tLondon, "point");
+    artur.face(tLondon, "smug").arms(tLondon, "hips");
 
-    // Shot 06 (28.5s - 34.8s): Tycoon pulls ahead on cut at 28.5s
-    const tTaunt = at("shouting");
-    tycoon.show(28.5);
-    tycoon.face(28.5, "smug").arms(28.5, "wave");
-    engineer.face(28.5, "determined").arms(28.5, "hold");
+    // Scene 5: Loading government plates & printing money
+    const tPrinters = at("printers", 54) || 57.0;
+    executive.face(tPrinters, "happy").arms(tPrinters, "clap");
+    artur.face(tPrinters, "grin").arms(tPrinters, "wave");
+    fx.emit("steam", tPrinters, tPrinters + 4.0, [-3.5, 1.2, 2], { size: 0.3, rise: 1.2, count: 12 });
 
-    // Shot 07 (34.8s - 40.4s): Bulb creates smooth secondary cancelling wave
-    const tSecondary = at("secondary");
-    tycoon.hide(34.8);
-    fx.add("notes", tSecondary, tSecondary + 3.0, [-3.5, 0.5, 14.0], { size: 1.2, color: "#38bdf8" });
+    // Scene 6: Suitcases of genuine cash & grand bank opening
+    const tSuitcases = at("suitcases", 72) || 75.0;
+    executive.hide(tSuitcases);
+    artur.face(tSuitcases, "laugh").arms(tSuitcases, "armsUp");
+    fx.add("burst", tSuitcases, tSuitcases + 2.0, [0, 2.5, 4], { size: 1.4, color: "#22c55e" });
 
-    // Shot 08 (40.4s - 45.7s): Heavy storm swells slam both ships on cut at 40.4s
-    const tStorm = at("swells");
-    tycoon.show(40.4);
-    tycoon.face(40.4, "shocked").arms(40.4, "facepalm");
-    engineer.face(40.4, "determined").arms(40.4, "hold");
-    fx.add("burst", tStorm, tStorm + 3.0, [0, 2.0, 10.0], { size: 2.2, color: "#e0f2fe" });
+    // Scene 7: Bank clerk notices duplicate serial numbers
+    const tClerk = at("clerk", 92) || 95.0;
+    clerk.show(tClerk - 0.5);
+    clerk.face(tClerk, "shocked").arms(tClerk, "point");
+    artur.face(tClerk, "worried").arms(tClerk, "facepalm");
+    fx.add("exclaim", tClerk + 1.0, tClerk + 2.8, [0, 2.4, 9], { size: 0.8, color: "#ef4444" });
 
-    // Shot 09 (45.7s - 47.8s): Sleek ship stalls!
-    const tStall = at("stalls");
-    tycoon.face(45.7, "worried").arms(45.7, "armsUp");
-    fx.add("burst", tStall, tStall + 2.0, [3.5, 3.5, 8.0], { size: 1.8, color: "#1e293b" });
+    // Scene 8: Bonfire furnace & government burning the currency
+    const tBurn = at("burn", 106) || 108.0;
+    clerk.hide(tBurn);
+    artur.face(tBurn, "shocked").arms(tBurn, "hold");
+    fx.emit("smoke", tBurn, tBurn + 4.5, [0, 0.5, 5], { size: 0.5, rise: 1.8, count: 20 });
 
-    // Shot 10 (47.8s - 53.9s): Narrator scientific reveal - destructive interference
-    const tReveal = at("cancels");
-    fx.add("stars", tReveal, tReveal + 3.5, [-3.5, 1.2, 14.5], { size: 1.5, color: "#22c55e" });
-
-    // Shot 11 (53.9s - 59.6s): Engineer zooms past drenched tycoon, triumphant victory!
-    const tVictory = at("zooms");
-    engineer.face(53.9, "grin").arms(53.9, "wave");
-    tycoon.face(53.9, "sad").arms(53.9, "shrug");
-    fx.add("stars", tVictory, tVictory + 3.5, [-3.5, 3.2, 8.0], { size: 1.6, color: "#fbbf24" });
-
-    // --- Dynamic 9:16 Camera Timeline ---
+    // --- Camera Timeline ---
     const cameraKeys = [
-      // 01: Low Angle Hero Bow Welding (0.0s - 5.8s)
-      { t: 0, pos: [-3.5, 1.8, 18.0], look: [-3.5, 1.2, 14.0], light: "day", move: "push", fov: 44 },
+      // 01: Hook - Money stack overview
+      { t: 0, pos: [2.5, 2.8, 6.0], look: [3.0, 1.2, 2.0], light: "golden", move: "push", fov: 42 },
 
-      // 02: Pier Two-Shot with Golden Speed Trophy (5.8s - 11.4s)
-      { t: 5.8, pos: [0, 2.2, 8.0], look: [0, 1.5, 3.5], light: "day", move: "push", fov: 42 },
+      // 02: Prison cell scheme
+      { t: tPrison - 1.0, pos: [-0.8, 2.0, 6.8], look: [-0.8, 1.5, 4.0], light: "night", move: "push", fov: 36 },
 
-      // 03: Tycoon Mocks Bulbous Nose (11.4s - 16.8s)
-      { t: 11.4, pos: [1.2, 1.8, 6.5], look: [0, 1.3, 3.5], light: "golden", move: "push", fov: 38 },
+      // 03: Forging signatures & gold seals
+      { t: tContract - 1.0, pos: [-0.8, 1.8, 2.5], look: [-0.8, 1.4, 1.2], light: "golden", move: "push", fov: 38 },
 
-      // 04: Boiler Room Gauges (16.8s - 23.0s)
-      { t: 16.8, pos: [-2.2, 2.0, 5.8], look: [-2.2, 1.5, 3.5], light: "interior", move: "push", fov: 36 },
+      // 04: London boardroom presentation
+      { t: tLondon - 1.0, pos: [0.6, 2.2, 7.5], look: [0.6, 1.6, 4.0], light: "interior", move: "push", fov: 40 },
 
-      // 05: High Aerial Wide Race Launch (23.0s - 28.5s)
-      { t: 23.0, pos: [0, 8.5, 22.0], look: [0, 2.0, 8.0], light: "golden", move: "pull", fov: 48 },
+      // 05: Industrial printing press in action
+      { t: tPrinters - 1.0, pos: [-3.5, 2.5, 5.8], look: [-3.5, 1.3, 2.0], light: "day", move: "pull", fov: 44 },
 
-      // 06: Tycoon Surges Ahead with Megaphone (28.5s - 34.8s)
-      { t: 28.5, pos: [3.5, 3.5, 12.0], look: [3.5, 2.6, 8.0], light: "day", move: "push", fov: 40 },
+      // 06: Grand bank lobby & riches
+      { t: tSuitcases - 0.5, pos: [0, 3.2, 9.5], look: [0, 1.6, 4.0], light: "golden", move: "pull", fov: 42 },
 
-      // 07: Waterline Profile on Bulb's Secondary Wave (34.8s - 40.4s)
-      { t: 34.8, pos: [-6.5, 1.6, 15.5], look: [-3.5, 0.8, 14.0], light: "day", move: "push", fov: 38 },
+      // 07: Duplicate serial number confrontation
+      { t: tClerk - 0.5, pos: [0, 2.4, 12.5], look: [0, 1.6, 9.0], light: "day", move: "push", fov: 36 },
 
-      // 08: Dramatic Storm Dutch Angle (40.4s - 45.7s)
-      { t: 40.4, pos: [1.5, 3.8, 16.0], look: [0, 1.8, 8.0], light: "night", move: "push", fov: 46 },
-
-      // 09: Sleek Ship Stalls in Heavy Spray (45.7s - 47.8s)
-      { t: 45.7, pos: [3.5, 2.8, 13.0], look: [3.5, 1.8, 8.0], light: "night", move: "push", fov: 36 },
-
-      // 10: Scientific 3D Wave Cancellation Diagram (47.8s - 53.9s)
-      { t: 47.8, pos: [-5.0, 1.5, 16.5], look: [-3.5, 0.6, 14.0], light: "day", move: "pull", fov: 40 },
-
-      // 11: Triumphant Winner Zooms Past Drenched Tycoon (53.9s - 59.6s)
-      { t: 53.9, pos: [-1.0, 4.0, 15.0], look: [0, 2.0, 8.0], light: "golden", move: "pull", fov: 44 }
+      // 08: Burning currency bonfire finale
+      { t: tBurn - 0.5, pos: [0, 3.8, 10.0], look: [0, 1.4, 4.0], light: "golden", move: "pull", fov: 44 }
     ];
 
     return {
       camera: cameraKeys,
       kicks: [
-        { t: 0.8, amp: 0.15 },
-        { t: 11.5, amp: 0.18 },
-        { t: 23.2, amp: 0.25 },
-        { t: 40.5, amp: 0.35 },
-        { t: 45.8, amp: 0.3 }
+        { t: 0.5, amp: 0.18 },
+        { t: tSuitcases, amp: 0.2 },
+        { t: tClerk, amp: 0.22 },
+        { t: tBurn, amp: 0.25 }
       ]
     };
   }
