@@ -202,7 +202,7 @@ export default {
       { t: 16.8, pos: [-2.2, 2.0, 5.8], look: [-2.2, 1.5, 3.5], light: "interior", move: "push", fov: 36 },
 
       // 05: High Aerial Wide Race Launch (23.0s - 28.5s)
-      { t: 23.0, pos: [0, 8.5, 22.0], look: [0, 2.0, 8.0], light: "dawn", move: "pull", fov: 48 },
+      { t: 23.0, pos: [0, 8.5, 22.0], look: [0, 2.0, 8.0], light: "golden", move: "pull", fov: 48 },
 
       // 06: Tycoon Surges Ahead with Megaphone (28.5s - 34.8s)
       { t: 28.5, pos: [3.5, 3.5, 12.0], look: [3.5, 2.6, 8.0], light: "day", move: "push", fov: 40 },
@@ -211,10 +211,10 @@ export default {
       { t: 34.8, pos: [-6.5, 1.6, 15.5], look: [-3.5, 0.8, 14.0], light: "day", move: "push", fov: 38 },
 
       // 08: Dramatic Storm Dutch Angle (40.4s - 45.7s)
-      { t: 40.4, pos: [1.5, 3.8, 16.0], look: [0, 1.8, 8.0], light: "storm", move: "push", fov: 46 },
+      { t: 40.4, pos: [1.5, 3.8, 16.0], look: [0, 1.8, 8.0], light: "night", move: "push", fov: 46 },
 
       // 09: Sleek Ship Stalls in Heavy Spray (45.7s - 47.8s)
-      { t: 45.7, pos: [3.5, 2.8, 13.0], look: [3.5, 1.8, 8.0], light: "storm", move: "push", fov: 36 },
+      { t: 45.7, pos: [3.5, 2.8, 13.0], look: [3.5, 1.8, 8.0], light: "night", move: "push", fov: 36 },
 
       // 10: Scientific 3D Wave Cancellation Diagram (47.8s - 53.9s)
       { t: 47.8, pos: [-5.0, 1.5, 16.5], look: [-3.5, 0.6, 14.0], light: "day", move: "pull", fov: 40 },
